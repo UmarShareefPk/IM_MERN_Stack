@@ -1,5 +1,6 @@
 const Incident = require('../models/incident');
-const multiparty = require('multiparty');
+const IncidentAttachment = require('../models/incidentAttachment');
+var fs = require('fs');
 
 
 const incidentById = (req, res) => {
@@ -8,44 +9,53 @@ const incidentById = (req, res) => {
       .catch(err => res.json(err))
  }
 
-const addIncident = (req, res) => {
-  //res.json(req);
-  console.log("req.body" , req.body);
-  console.log("req.files" , req.files);
-  // let form = new multiparty.Form();
+const addIncident = async (req, res) => {
+  
+  const incident = new Incident(req.body);
+  var newIncident = await incident.save().catch(err=>res.status(400).json(err));
+  var id = newIncident._id;  
 
-  // form.parse(req, function(err, fields, files) {
-  //    Object.keys(fields).forEach(function(name) {
-  //         console.log('got field named ' + name);
-  //     });
-  // });
+  if (!fs.existsSync('./Attachments/Incidents/' + id)) {
+    fs.mkdir('./Attachments/Incidents/' + id, err => {       
+      });
+  }   
 
-  res.json("yes");
-
-  const incident = new Incident({
-    CreatedBy : new Date(),
-    AssignedTo : "Ali",
-    CreatedAT : "Ashraf",
-    Title : "test",
-    Description : "Ali.Ashraf@gmail.com",
-    AdditionalData : "03236006334",
-    Attachments : "test",
-    StartTime : "test",
-    DueDate : "test",
-    Status : "test",
-    Comments : "test"
+  req.files.forEach(file => {
+    let path = './Attachments/Incidents/' + id + '/'+ file.originalname
+    fs.writeFile(path , file.buffer, async ()=>{
+      const incidentAttachment = new IncidentAttachment({
+                                        FileName : file.originalname,
+                                        ContentType : file.mimetype,
+                                        IncidentId : id,
+                                        Size : file.size
+                                    });
+      await incidentAttachment.save();
+    })  
   });
 
-  // incident.save()
-  //     .then((r)=> {
-  //       res.json(r);
-  //      })
-  //      .catch(err => {
-  //        res.json(r);
-  //      })
-    }
+  res.status(200).json("Incident added.");
+}
+
+const incidentsWithPage = async (req, res) => {
+  let PageSize =  req.query.PageSize;
+  let PageNumber =  req.query.PageNumber;
+  let SortBy =  req.query.SortBy;
+  let SortDirection =  req.query.SortDirection;
+
+  let total = await Incident.find().countDocuments();
+  let skip = PageSize * (PageNumber - 1); 
+  
+  let incidents = await Incident.find().skip(skip).limit(parseInt(PageSize)).sort('createdAt');
+
+  res.json({
+    Incidents : incidents,
+    TotalIncidents : total
+  });
+}
+
 
 module.exports = {
   incidentById,
-  addIncident
+  addIncident,
+  incidentsWithPage
 }

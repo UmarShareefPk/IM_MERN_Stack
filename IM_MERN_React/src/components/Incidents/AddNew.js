@@ -60,7 +60,7 @@ import { Redirect } from 'react-router-dom'
 
    const assigneeSelected = (userId) => {       
     let currentAssignee = allAssignees.find(assignee => {
-        return assignee.Id === userId
+        return assignee._id === userId
     })
     console.log(currentAssignee);
     var assigneeDropdown = M.Dropdown.getInstance(assigneeRef.current);
@@ -127,7 +127,7 @@ import { Redirect } from 'react-router-dom'
      formData.append("AssignedTo", assignee);
      formData.append("Title", title); 
      formData.append("Description", description); 
-     formData.append("AdditionalDeta", additionalDetails); 
+     formData.append("AdditionalData", additionalDetails); 
      formData.append("StartTime", startTime ); 
      formData.append("DueDate",  dueDate ); 
      formData.append("Status", "N"); 
@@ -189,7 +189,7 @@ import { Redirect } from 'react-router-dom'
                         </li>
                         {!assigneeList? null : assigneeList.map((user) => {
                           return (
-                            <li  key={user.Id} onClick= {()=>assigneeSelected(user.Id)}>
+                            <li  key={user._id} onClick= {()=>assigneeSelected(user._id)}>
                               <a className="indigo-text" href="#!">  {user.FirstName + " " + user.LastName}    </a>
                             </li>
                           );

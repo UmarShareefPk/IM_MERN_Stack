@@ -13,6 +13,10 @@ const incidentAttachmentSchema = new Schema({
   IncidentId: {
     type: String,
     required: true
+  },
+  Size: {
+    type: String,
+    required: true
   }
 }, { timestamps: true });
 

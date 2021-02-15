@@ -33,8 +33,7 @@ export const incidentsWithPage = (parameters) => {
     return (dispatch, getState) => {      
         axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
         const url = incidentsUrls.addNewIncidentUrl
-       // axios.post(url, formData)
-       console.log(formData);
+    
         axios({
           method: 'post',          
           url :incidentsUrls.addNewIncidentUrl,
@@ -44,14 +43,13 @@ export const incidentsWithPage = (parameters) => {
                   }, 
           data: formData//qs.stringify(formData)
         })
-          .then((response)=>{            
+          .then((response)=>{ 
              const data = true;
-             // dispatch({ type: 'NEW_INCIDENT_STATUS', data });
-          })
-          
+             dispatch({ type: 'NEW_INCIDENT_STATUS', data });
+          })          
           .catch((err)=>{  
-            const data = err.message;
-           // dispatch({ type: 'NEW_INCIDENT_ERROR', data });
+            const data = err.message;         
+            dispatch({ type: 'NEW_INCIDENT_ERROR', data });
           });   
     }
   }

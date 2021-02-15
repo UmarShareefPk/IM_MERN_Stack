@@ -13,7 +13,7 @@ export const usersUrls = {
 }
 
 export const incidentsUrls = {
-    incidentsWithPageUrl : baseUrl + "api/Incidents/GetIncidentsWithPage?",
+    incidentsWithPageUrl : baseUrl + "incidents/incidentsWithPage?",
     addNewIncidentUrl : baseUrl + "incidents/addincident",
     addNewCommentUrl : baseUrl + "api/Incidents/AddComment",
     deleteCommentUrl : baseUrl + "api/Incidents/DeleteComment?",

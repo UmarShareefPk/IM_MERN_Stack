@@ -10,10 +10,6 @@ const incidentSchema = new Schema({
     type: String,
     required: true,
   },
-  CreatedAT: {
-    type: Date,
-    required: true
-  },
   Title: {
     type: String,
     required: true
@@ -23,10 +19,6 @@ const incidentSchema = new Schema({
     required: true
   },
   AdditionalData: {
-    type: String,
-    required: true
-  },
-  Attachments: {
     type: String,
     required: true
   },
@@ -41,11 +33,7 @@ const incidentSchema = new Schema({
   Status: {
     type: String,
     required: true
-  },
-  Comments: {
-    type: String,
-    required: true
-  },
+  } 
 }, { timestamps: true });
 
 const Incident = mongoose.model('incident', incidentSchema);

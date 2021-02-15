@@ -2,6 +2,7 @@
 
 # dependencies
 /IM_Nodejs/node_modules
+/IM_Nodejs/Attachments
 /IM_MERN_React/node_modules
 /.pnp
 .pnp.js
