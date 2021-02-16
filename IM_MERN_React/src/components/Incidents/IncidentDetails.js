@@ -205,6 +205,7 @@ function IncidentDetails({
       Value : value,
       UserId : userId
     };
+    console.log(parameters);
     updateIncident(parameters); // Calling action here
   }
 

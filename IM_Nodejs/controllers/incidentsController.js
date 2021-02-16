@@ -38,8 +38,6 @@ const incidentById = async (req, res) => {
   return comment;
  })
 
- console.log(cAttachments);
-
  res.json(incident);
  }
 
@@ -104,8 +102,49 @@ const addComment = async (req, res) => {
     if(fileCount === 0)
       res.status(200).json(comment_response);
     })  
+  });  
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+const updateIncident = async (req, res) => {
+  let field = req.body.Parameter;
+  let incidentId = req.body.IncidentId;
+  let value = req.body.Value;
+  let userId = req.body.UserId;
+  let = updateobj = {};
+  switch(field.toLowerCase()){
+    case 'assignedto':
+      updateobj = {AssignedTo : value };
+      break;
+    case 'title':
+      updateobj = {Title : value };
+      break;
+    case 'description':
+      updateobj = {Description : value };
+      break;
+    case 'additionaldata':
+      updateobj = {AdditionalData : value };
+      break;
+    case 'starttime':
+      updateobj = {StartTime : value };
+      break;
+    case 'duedate':
+      updateobj = {DueDate : value };
+      break;
+    case 'status':
+      updateobj = {Status : value };
+      break;
+    default:
+      updateobj = {};
+  }
+
+  let updateResult = await Incident.findOneAndUpdate({_id: incidentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
   });
 
+  console.log("req.body" , req.body);
+  console.log(updateResult);
+
+  res.status(200).json(updateResult);
   
 }
 
@@ -134,5 +173,6 @@ module.exports = {
   incidentById,
   addIncident,
   incidentsWithPage,
-  addComment
+  addComment,
+  updateIncident
 }

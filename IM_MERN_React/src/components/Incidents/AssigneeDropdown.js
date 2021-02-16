@@ -32,7 +32,7 @@ function AssigneeDropdown({getAllAssignees, allAssignees, updateIncidentByField,
 
   const assigneeSelected = (userId) => {
     let currentAssignee = allAssignees.find((assignee) => {
-      return assignee.Id === userId;
+      return assignee._id === userId;
     });
 
     setAssignee(userId);
@@ -101,8 +101,8 @@ function AssigneeDropdown({getAllAssignees, allAssignees, updateIncidentByField,
                               : assigneeList.map((user) => {
                                   return (
                                     <li
-                                      key={user.Id}
-                                      onClick={() => assigneeSelected(user.Id)}
+                                      key={user._id}
+                                      onClick={() => assigneeSelected(user._id)}
                                     >
                                       <a className="indigo-text" href="#!">
                                         {user.FirstName + " " + user.LastName}

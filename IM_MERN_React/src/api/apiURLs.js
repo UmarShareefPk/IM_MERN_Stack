@@ -17,7 +17,7 @@ export const incidentsUrls = {
     addNewIncidentUrl : baseUrl + "incidents/addincident",
     addNewCommentUrl : baseUrl + "incidents/AddComment",
     deleteCommentUrl : baseUrl + "api/Incidents/DeleteComment?",
-    updateIncidentUrl : baseUrl + "api/Incidents/UpdateIncident",
+    updateIncidentUrl : baseUrl + "incidents/updateIncident",
     updateCommentUrl : baseUrl + "api/Incidents/UpdateComment",    
     getIncidentByIdUrl : baseUrl + "incidents/incidentById?Id=",
     deleteAttachmentUrl : baseUrl + "api/Incidents/DeleteFile?",

@@ -61,7 +61,7 @@ export const incidentsWithPage = (parameters) => {
         axios.post(url, formData)
           .then((response)=>{            
              const comment = response.data;
-             console.log("Comment", comment);
+             //console.log("Comment", comment);
               dispatch({ type: 'ADD_NEW_COMMENT', data: comment });
               incidentUpdatedSignalR(comment.IncidentId);
           })
@@ -96,9 +96,14 @@ export const incidentsWithPage = (parameters) => {
   export const updateIncident = (parameters) => {
     return (dispatch, getState) => {      
      // console.log(comment);
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
-        const url = incidentsUrls.updateIncidentUrl
-        axios.post(url, parameters)
+        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};      
+        axios({
+          method: 'post',          
+          url :incidentsUrls.updateIncidentUrl,
+          headers: { 'Content-type': 'application/json'}, 
+         //json: true,
+          data: parameters
+        })
           .then((response)=>{  
               dispatch({ type: 'INCIDENTS_UPDATE', parameters });
               incidentUpdatedSignalR(parameters.IncidentId);

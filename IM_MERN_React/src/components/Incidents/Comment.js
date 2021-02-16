@@ -13,7 +13,7 @@ function Comment({
   updateComment,
   deleteComment
 }) {
-    console.log(comment);
+  
   const [editComment, setEditComment] = useState(false);
   const [commentText, setCommentText] = useState(comment.CommentText);
   const [files, setFiles] = useState(null);
@@ -81,9 +81,9 @@ function Comment({
         <a className="username">{getNameById(comment.UserId)}</a> added a
         comment. -{" "}
         <span
-          title={moment(comment.CreateDate).format("MMMM DD YYYY, h:mm:ss a")}
+          title={moment(comment.createdAt).format("MMMM DD YYYY, h:mm:ss a")}
         >
-          {moment(comment.CreateDate).fromNow()}{" "}
+          {moment(comment.createdAt).fromNow()}{" "}
         </span>
         <span className="right">
           <i
