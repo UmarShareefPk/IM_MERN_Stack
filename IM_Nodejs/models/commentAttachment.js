@@ -13,8 +13,12 @@ const commentAttachmentSchema = new Schema({
   CommentId: {
     type: String,
     required: true
+  },
+  Size: {
+    type: String,
+    required: true
   }
 }, { timestamps: true });
 
-const CommentAttachment = mongoose.model('IncidentAttachment', commentAttachmentSchema);
+const CommentAttachment = mongoose.model('CommentAttachment', commentAttachmentSchema);
 module.exports = CommentAttachment;

@@ -61,7 +61,7 @@ export const incidentsWithPage = (parameters) => {
         axios.post(url, formData)
           .then((response)=>{            
              const comment = response.data;
-            // console.log("Comment", comment);
+             console.log("Comment", comment);
               dispatch({ type: 'ADD_NEW_COMMENT', data: comment });
               incidentUpdatedSignalR(comment.IncidentId);
           })

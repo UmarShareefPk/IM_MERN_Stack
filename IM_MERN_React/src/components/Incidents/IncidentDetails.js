@@ -59,7 +59,7 @@ function IncidentDetails({
       setDescription(incidentData.Description);
       setAdditionalDetails(incidentData.AdditionalData); 
       let currentAssignee =  allAssignees.find((assignee) => {
-        return assignee.Id === incidentData.AssignedTo;
+        return assignee._id === incidentData.AssignedTo;
       });
       setAssigneeName(currentAssignee.FirstName + " " + currentAssignee.LastName);  
       setStatus(incidentData.Status);
@@ -78,7 +78,7 @@ function IncidentDetails({
 
   const getNameById = (id) => {   
     let user = allAssignees.find((assignee) => {
-      return assignee.Id === id;
+      return assignee._id === id;
     });   
     if(!user){    
       return id;
@@ -92,7 +92,7 @@ function IncidentDetails({
           incidentsUrls.downloadFileUrl
            + "type=incident"
            + "&commentId=" + "" 
-           + "&incidentId=" + incidentData.Id
+           + "&incidentId=" + incidentData._id
            + "&filename=" + file.FileName
            + "&contentType=" + file.ContentType
     ); 
@@ -200,7 +200,7 @@ function IncidentDetails({
 
   const updateIncidentByField = (field , value) => {    
     let parameters = {
-      IncidentId : incidentData.Id,
+      IncidentId : incidentData._id,
       Parameter : field,
       Value : value,
       UserId : userId
@@ -215,7 +215,7 @@ function IncidentDetails({
 
   const deleteIncidentAttachment = (file) => {        
     if(window.confirm("Are you sure you want to delete this attachment." + file.FileName)){
-      deleteAttachment("incicent" , userId, incidentData.Id , file);
+      deleteAttachment("incicent" , userId, incidentData._id , file);
     }      
    }
 
@@ -301,7 +301,7 @@ function IncidentDetails({
                     {" "}
                     <span
                       className="im-createTime black-text "
-                      title={moment(incidentData.CreatedAT).format(
+                      title={moment(new Date(incidentData.createdAt)).format(
                         "MMMM DD YYYY, h:mm:ss a"
                       )}
                     >
@@ -310,7 +310,7 @@ function IncidentDetails({
                         {" "}
                         {getNameById(incidentData.CreatedBy)}{" "}
                       </a>{" "}
-                      - {moment(incidentData.CreatedAT).fromNow()}
+                      - {moment(new Date(incidentData.createdAt)).fromNow()}
                     </span>
                   </h5>
                 </div>
@@ -421,7 +421,7 @@ function IncidentDetails({
                         : incidentData.Attachments.map((file) => {
                             return (
                               <li
-                                key={file.Id}
+                                key={file._id}
                                 className="center indigo-text darken-4"
                               >
                                 <i
@@ -447,7 +447,7 @@ function IncidentDetails({
 
                   <Comments
                     userId={userId}
-                    incidentId={incidentData.Id}
+                    incidentId={incidentData._id}
                     comments={incidentData.Comments}
                     getNameById={getNameById}
                   />

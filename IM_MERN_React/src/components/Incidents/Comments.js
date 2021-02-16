@@ -59,7 +59,7 @@ function Comments({
           comments.map((comment) => {
             return (
               <Comment
-                key={comment.Id}
+                key={comment._id}
                 comment={comment}
                 getNameById={getNameById}
                 incidentId={incidentId}

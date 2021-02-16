@@ -13,7 +13,7 @@ function Comment({
   updateComment,
   deleteComment
 }) {
-
+    console.log(comment);
   const [editComment, setEditComment] = useState(false);
   const [commentText, setCommentText] = useState(comment.CommentText);
   const [files, setFiles] = useState(null);
@@ -29,7 +29,7 @@ function Comment({
 
   const commentEditSave = () => {
     let changedComment = {
-      Id : comment.Id,
+      Id : comment._id,
       IncidentId : incidentId,
       UserId : userId,
       CreateDate : new Date(),
@@ -71,7 +71,7 @@ function Comment({
         "Are you sure you want to delete this comment."
       )
     ) {
-      deleteComment(comment.Id,incidentId, userId );  
+      deleteComment(comment._id,incidentId, userId );  
     }
   }
 
@@ -131,7 +131,7 @@ function Comment({
             ? null
             : comment.attachments.map((file) => {
                 return (
-                  <li key={file.Id}>
+                  <li key={file._id}>
                     <a className="center indigo-text darken-4">
                       {!editComment ? null : (
                         <i

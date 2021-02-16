@@ -50,7 +50,7 @@ import {  useHistory  } from 'react-router-dom';
 
     const getUserNameById = (id) => {   
       let user = props.allAssignees.find((assignee) => {
-        return assignee.Id === id;
+        return assignee._id === id;
       });   
       if(!user){    
         return id;

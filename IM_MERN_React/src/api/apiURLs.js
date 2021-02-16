@@ -15,11 +15,11 @@ export const usersUrls = {
 export const incidentsUrls = {
     incidentsWithPageUrl : baseUrl + "incidents/incidentsWithPage?",
     addNewIncidentUrl : baseUrl + "incidents/addincident",
-    addNewCommentUrl : baseUrl + "api/Incidents/AddComment",
+    addNewCommentUrl : baseUrl + "incidents/AddComment",
     deleteCommentUrl : baseUrl + "api/Incidents/DeleteComment?",
     updateIncidentUrl : baseUrl + "api/Incidents/UpdateIncident",
     updateCommentUrl : baseUrl + "api/Incidents/UpdateComment",    
-    getIncidentByIdUrl : baseUrl + "api/Incidents/IncidentById?Id=",
+    getIncidentByIdUrl : baseUrl + "incidents/incidentById?Id=",
     deleteAttachmentUrl : baseUrl + "api/Incidents/DeleteFile?",
     downloadFileUrl : baseUrl + "api/Incidents/DownloadFile?",
 }

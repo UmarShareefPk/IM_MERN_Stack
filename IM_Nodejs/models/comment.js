@@ -9,11 +9,7 @@ const commentSchema = new Schema({
   UserId: {
     type: String,
     required: true,
-  },
-  CreateDate: {
-    type: String,
-    required: true
-  },
+  },  
   CommentText: {
     type: String,
     required: true
