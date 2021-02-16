@@ -9,6 +9,8 @@ export default function Pages({TotalPages, PostsPerPage, setPageNumber, setPageS
     const [currentPage, setCurrentPage] = useState(1);
     const [currentSize, setCurrentSize] = useState(5);
 
+    console.log(TotalPages, PostsPerPage);
+
     const ddlRef = useRef();
 
     let pages = [];
@@ -38,7 +40,7 @@ export default function Pages({TotalPages, PostsPerPage, setPageNumber, setPageS
     }, [search])
 
     pages = pages.map((p,index)=>{
-        let pclass = currentPage === p ? "active" : "";        
+        let pclass = currentPage === p ? "page active" : "page";        
         return (             
             <li className={pclass} key={p}  onClick={() => pageNumberClick(p)}>              
               <a > {p} </a>

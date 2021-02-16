@@ -44,12 +44,12 @@ const incidentsWithPage = async (req, res) => {
 
   let total = await Incident.find().countDocuments();
   let skip = PageSize * (PageNumber - 1); 
-  
+
   let incidents = await Incident.find().skip(skip).limit(parseInt(PageSize)).sort('createdAt');
 
   res.json({
     Incidents : incidents,
-    TotalIncidents : total
+    Total_Incidents : total
   });
 }
 

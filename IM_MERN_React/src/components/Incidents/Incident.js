@@ -49,7 +49,7 @@ function Incident({incident, dispatch, getUserNameById}) {
           className="tbl-title"
           title={incident.Title}
         >
-         <span className="indigo-text darken-4" onClick = { () => openIncident(incident.Id) }>
+         <span className="indigo-text darken-4" onClick = { () => openIncident(incident._id) }>
                {incident.Title.length > 50 ? incident.Title.slice(0,50) + " ..." : incident.Title }
          </span>
         </td>

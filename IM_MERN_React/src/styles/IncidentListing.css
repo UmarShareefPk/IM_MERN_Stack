@@ -9,7 +9,9 @@ nav .badge{
     .pagination li.active {
         background-color: #1A237E;
     }
-  
+    .pagination li.page{
+        cursor: pointer;
+    }
     
     .title{
         color:#1A237E;
