@@ -28,6 +28,9 @@ function Comment({
     socket.on('chat message', function(msg) {
       console.log(msg);
     });
+    socket.on('name', function(msg) {
+      console.log(msg);
+    });
   }, [])
 
   const commentEditClick = () => {
@@ -36,7 +39,7 @@ function Comment({
 
  
     socket.emit('chat message', "sending myself a message");
-
+    socket.emit('name', " Umar Shareef");
   };
   const commentEditCancel = () => {
     setCommentText(comment.CommentText);

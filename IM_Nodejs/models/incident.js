@@ -20,7 +20,7 @@ const incidentSchema = new Schema({
   },
   AdditionalData: {
     type: String,
-    required: true
+    required: false
   },
   StartTime: {
     type: String,

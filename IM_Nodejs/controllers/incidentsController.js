@@ -2,6 +2,8 @@ const Incident = require('../models/incident');
 const IncidentAttachment = require('../models/incidentAttachment');
 const Comment = require('../models/comment');
 const CommentAttachment = require('../models/commentAttachment');
+const WatchList = require('../models/watchList');
+const Notification = require('../models/notification');
 var fs = require('fs');
 var path = require('path');
 
@@ -39,8 +41,9 @@ const incidentById = async (req, res) => {
 
 const addIncident = async (req, res) => {
   
+  //console.log("req.body" , req.body);
   const incident = new Incident(req.body);
-  var newIncident = await incident.save().catch(err=>res.status(400).json(err));
+  var newIncident = await incident.save().catch(err => console.log(err));
   var id = newIncident._id;  
 
   if (!fs.existsSync('./Attachments/Incidents/' + id)) {
@@ -60,6 +63,10 @@ const addIncident = async (req, res) => {
       await incidentAttachment.save();
     })  
   });
+
+  await addWatchList(id , req.body.AssignedTo);
+  await addWatchList(id , req.body.CreatedBy);
+  await addNotification(id , req.body.CreatedBy , req.body.AssignedTo, `[${ req.body.CreatedBy}] created an Incident and assigned it to you.`)
 
   res.status(200).json("Incident added.");
 }
@@ -98,6 +105,29 @@ const addComment = async (req, res) => {
       res.status(200).json(comment_response);
     })  
   });  
+}
+
+///////////////////////////////////  Notification ////////////////////
+
+const addWatchList = async (incidentId , userId) => {
+  const watchList = new WatchList({
+    IncidentId: incidentId,  
+    UserId: userId   
+  });
+  var watchlistAdded = await watchList.save().catch(err=> console.log(err));
+}
+
+const addNotification = async (incidentId , SourceUserId , userId, notifyAbout) => {
+  const notification = new Notification({
+    IncidentId: incidentId,
+    SourceUserId: SourceUserId,
+    IsRead: false,
+    ReadDate: null,
+    UserId: userId,
+    NotifyAbout: notifyAbout
+  });
+  var newNotification = await notification.save().catch(err=> console.log(err));
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

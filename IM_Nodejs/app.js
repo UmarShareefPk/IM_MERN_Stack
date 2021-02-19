@@ -46,6 +46,9 @@ io.on('connection', (socket) => {
   socket.on('chat message', msg => {
     io.emit('chat message', `From Server 1 :  ${new Date()} and id is ${socket.id} ` + msg);
   });
+  socket.on('name', msg => {
+    io.emit('name', `Name:  ${new Date()} and id is ${socket.id} ` + msg);
+  });
 });
 
 http.listen(4444, () => {
