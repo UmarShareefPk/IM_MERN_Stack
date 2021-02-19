@@ -123,7 +123,7 @@ export const incidentsWithPage = (parameters) => {
         const url = incidentsUrls.updateCommentUrl
         axios.post(url, comment)
           .then((response)=>{  
-          //  dispatch(getIncidentById(comment.IncidentId)); 
+            dispatch(getIncidentById(comment.IncidentId)); 
           incidentUpdatedSignalR(comment.IncidentId);
           })
           .catch((err)=>{                 

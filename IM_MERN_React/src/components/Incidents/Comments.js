@@ -4,6 +4,7 @@ import {  useHistory  } from 'react-router-dom';
 import Comment from "./Comment";
 import { connect } from "react-redux";
 import {  addNewComment } from "../../store/actions/incidentsActions";
+import socketIOClient from "socket.io-client";
 
 function Comments({
   incidentId,
@@ -14,6 +15,9 @@ function Comments({
 }) {
   const [newComment, setNewComment] = useState("");
   const [newCommentFiles, setNewCommentFiles] = useState(null);
+
+  const [socket, setSocket] = useState(socketIOClient("http://localhost:4444"))
+
 
   const newCommentFilesRef = useRef();
   const history = useHistory();
@@ -63,7 +67,8 @@ function Comments({
                 comment={comment}
                 getNameById={getNameById}
                 incidentId={incidentId}
-                userId={userId}               
+                userId={userId}   
+                socket = {socket}            
               />
             );
           })

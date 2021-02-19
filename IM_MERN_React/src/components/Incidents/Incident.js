@@ -61,7 +61,7 @@ function Incident({incident, dispatch, getUserNameById}) {
         </td>
         <td>{getUserNameById(incident.AssignedTo)}</td>
         <td>{getUserNameById(incident.CreatedBy)}</td>
-        <td><span title= {moment(incident.CreatedAT).format("MMMM DD YYYY, h:mm:ss a")}>{moment(incident.CreatedAT).fromNow() } </span></td>
+        <td><span title= {moment(incident.createdAt).format("MMMM DD YYYY, h:mm:ss a")}>{moment(incident.createdAt).fromNow() } </span></td>
         <td><span className={dueDateClass} title= {moment(incident.DueDate).format("MMMM DD YYYY, h:mm:ss a")}>{moment(incident.DueDate).fromNow() } </span></td>
         <td>{statusName(incident.Status)}</td>
       </tr>

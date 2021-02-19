@@ -3,13 +3,7 @@ const IncidentAttachment = require('../models/incidentAttachment');
 const Comment = require('../models/comment');
 const CommentAttachment = require('../models/commentAttachment');
 var fs = require('fs');
-
-
-// const incidentById = (req, res) => {
-//   Incident.findById(req.params.id)
-//       .then(r => res.json(r))
-//       .catch(err => res.json(err))
-//  }
+var path = require('path');
 
 
 const incidentById = async (req, res) => {
@@ -80,12 +74,13 @@ const addComment = async (req, res) => {
 
   comment_response.attachments = [];
 
+  if(!req.files || req.files.length === 0)
+       res.status(200).json(comment_response);
+
   if (!fs.existsSync('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id)) {   
-    fs.mkdir('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id,  {recursive: true}, err => {  
-           
+    fs.mkdir('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id,  {recursive: true}, err => {             
       });
   }   
-
   let fileCount = req.files.length;
   req.files.forEach(file => {
     let path = './Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id + '/'+ file.originalname
@@ -141,13 +136,19 @@ const updateIncident = async (req, res) => {
   let updateResult = await Incident.findOneAndUpdate({_id: incidentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
   });
 
-  console.log("req.body" , req.body);
-  console.log(updateResult);
-
-  res.status(200).json(updateResult);
-  
+  res.status(200).json(updateResult);  
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+const updateComment = async (req, res) => {
 
+   let commentId = req.body._id; 
+  let updateobj = {CommentText : req.body.CommentText };   
+
+   let updateResult = await Comment.findOneAndUpdate({_id: commentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
+   });
+   
+  res.status(200).json(updateResult);  
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const incidentsWithPage = async (req, res) => {
@@ -159,7 +160,7 @@ const incidentsWithPage = async (req, res) => {
   let total = await Incident.find().countDocuments();
   let skip = PageSize * (PageNumber - 1); 
 
-  let incidents = await Incident.find().skip(skip).limit(parseInt(PageSize)).sort('createdAt');
+  let incidents = await Incident.find().skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
 
   res.json({
     Incidents : incidents,
@@ -169,10 +170,32 @@ const incidentsWithPage = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const downloadFile = (req, res) => {
+  let type =  req.query.type;
+  let CommentId =  req.query.commentId;
+  let incidentId =  req.query.incidentId;
+  let FileName =  req.query.filename;
+  let ContentType =  req.query.ContentType;
+  let filepath = "";
+  if(!CommentId || CommentId =="") 
+    filepath =path.join( __dirname.replace("\controllers" , "") ,
+                  '/Attachments/Incidents/' + incidentId +  '/' + FileName);
+  else
+  filepath =path.join( __dirname.replace("\controllers" , "") ,
+                  '/Attachments/Incidents/' + incidentId +  '/Comments/'+ CommentId + '/' + FileName);
+
+  let dirpath = __dirname.replace("\controllers" , "");  
+  res.download(filepath);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 module.exports = {
   incidentById,
   addIncident,
   incidentsWithPage,
   addComment,
-  updateIncident
+  updateIncident,
+  downloadFile,
+  updateComment
 }
