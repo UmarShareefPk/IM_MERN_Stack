@@ -26,6 +26,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  SocketId: {
+    type: String,
+    required: false
+  },
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -16,9 +16,6 @@ function Comments({
   const [newComment, setNewComment] = useState("");
   const [newCommentFiles, setNewCommentFiles] = useState(null);
 
-  const [socket, setSocket] = useState(socketIOClient("http://localhost:4444"))
-
-
   const newCommentFilesRef = useRef();
   const history = useHistory();
   //console.log(history);
@@ -67,8 +64,7 @@ function Comments({
                 comment={comment}
                 getNameById={getNameById}
                 incidentId={incidentId}
-                userId={userId}   
-                socket = {socket}            
+                userId={userId}                       
               />
             );
           })

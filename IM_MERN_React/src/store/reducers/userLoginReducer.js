@@ -3,7 +3,7 @@ const initState = {
     userId : null,
     loginError : false,
     token : null ,
-    hubId : null  
+    socketId : null  
    
    }
    
@@ -26,10 +26,10 @@ const initState = {
            token: null,
          };
 
-       case "UPDATE_HUB":
+       case "UPDATE_SOCKET":
          return {
            ...state,
-           hubId: action.hubId,
+           socketId: action.socketId,
          };
        case "SIGN_OUT":
          return {
@@ -38,7 +38,7 @@ const initState = {
            userId : null,
            loginError : false,
            token : null ,
-           hubId : null  
+           socketId : null  
           
          };
        default:

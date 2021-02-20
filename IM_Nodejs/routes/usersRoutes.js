@@ -9,6 +9,7 @@ const router = express.Router();
  router.get('/allUsers', usersController.allUsers);
  router.get('/addUser', usersController.addUser);
  router.get('/addUserLogin', usersController.addUserLogin);
+ router.post('/updateSocketId', usersController.updateSocketId);
  
 
 

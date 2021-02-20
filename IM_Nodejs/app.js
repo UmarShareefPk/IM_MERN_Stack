@@ -3,14 +3,10 @@ const app = express();
 const mongoose = require('mongoose');
 const usersRoutes = require('./routes/usersRoutes');
 const incidentsRoutes = require('./routes/incidentsRoutes');
+const httpSocket = require('./socket'); 
 var cors = require('cors');
 const bodyParser = require('body-parser');
-const http = require('http').Server(app);
-const io = require('socket.io')(http,  {
-  cors: {
-    origin: '*',
-  }
-});
+
 
 //io.set('origins', '*:*');
 
@@ -40,17 +36,3 @@ app.get('/person', (req, res) => {
     res.json("Working");
 });
 
-/////////////////////////////  Socket ////////////////
-io.on('connection', (socket) => {
-  console.log("socket", socket.id);
-  socket.on('chat message', msg => {
-    io.emit('chat message', `From Server 1 :  ${new Date()} and id is ${socket.id} ` + msg);
-  });
-  socket.on('name', msg => {
-    io.emit('name', `Name:  ${new Date()} and id is ${socket.id} ` + msg);
-  });
-});
-
-http.listen(4444, () => {
-  console.log(`Socket.IO server running at http://localhost:${4444}/`);
-});

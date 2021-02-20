@@ -76,8 +76,8 @@ const addUser = (req, res) => {
 
 const addUserLogin = (req, res) => {
   const userlogin = new UserLogin({
-    UserId : "60259f4996e1a735fc5146f9",
-    Username : "umar",
+    UserId : "6025a25dc3fe122284bfb351",
+    Username : "ali",
     Password : "password"   
   });
 
@@ -88,6 +88,13 @@ const addUserLogin = (req, res) => {
        .catch(err => {
          res.json(r);
        });
+}
+
+const updateSocketId = async (req, res) => {
+
+  let updateResult = await User.findOneAndUpdate({_id: req.body.UserId}, { $set: {SocketId :  req.body.SocketId}}, {useFindAndModify: false}, ()=>{
+  });
+  //console.log(updateResult);
 }
 
 
@@ -122,7 +129,8 @@ module.exports = {
   userById,
   allUsers,
   addUser,
-  addUserLogin
+  addUserLogin,
+  updateSocketId
   // blog_details, 
   // blog_create_get, 
   // blog_create_post, 

@@ -3,7 +3,7 @@ import moment from "moment";
 import { deleteAttachment, updateComment , deleteComment } from "../../store/actions/incidentsActions";
 import { connect } from "react-redux";
 import { incidentsUrls } from "../../api/apiURLs";
-import socketIOClient from "socket.io-client";
+
 
 function Comment({
   comment,
@@ -20,26 +20,9 @@ function Comment({
   const [commentText, setCommentText] = useState(comment.CommentText);
   const [files, setFiles] = useState(null);
 
- // const [socket, setSocket] = useState(socketIOClient("http://localhost:4444"))
-
-  
-  useEffect(() => {
-    //socket = socketIOClient("http://localhost:4444");
-    socket.on('chat message', function(msg) {
-      console.log(msg);
-    });
-    socket.on('name', function(msg) {
-      console.log(msg);
-    });
-  }, [])
-
   const commentEditClick = () => {
     setEditComment(!editComment);
     setCommentText(comment.CommentText);
-
- 
-    socket.emit('chat message', "sending myself a message");
-    socket.emit('name', " Umar Shareef");
   };
   const commentEditCancel = () => {
     setCommentText(comment.CommentText);

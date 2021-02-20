@@ -7,8 +7,8 @@ export const usersUrls = {
     allUsersUrl : baseUrl + "users/allUsers",
     userssWithPageUrl : baseUrl + "api/Users/GetUsersWithPage?",
     addNewUserUrl : baseUrl + "api/Users/AddUser",
-    updateHubIdUrl : baseUrl + "api/Users/UpdateHubId",
-    allNotificationsUrl :  baseUrl + "api/Users/UserNotifications",
+    updateSocketIdUrl : baseUrl + "users/updateSocketId",
+    allNotificationsUrl :  baseUrl + "users/userNotifications",
     setNotificationStatusUrl : baseUrl + "api/Users/UpdateIsRead"
 }
 
