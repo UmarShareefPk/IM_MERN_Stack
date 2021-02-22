@@ -90,7 +90,7 @@ import {  useHistory  } from 'react-router-dom'
                   {
                    !props.Users? null : props.Users.map(user=>{
                           return (
-                            <User key={user.Id} user= {user} />                          )
+                            <User key={user._id} user= {user} />                          )
                       })
                   }           
                   </tbody>

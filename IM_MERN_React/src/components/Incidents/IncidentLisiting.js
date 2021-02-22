@@ -110,7 +110,7 @@ import {  useHistory  } from 'react-router-dom';
                   {
                       props.Incidents.map(incident=>{
                           return (
-                            <Incident key={incident.Id} incident= {incident} getUserNameById={getUserNameById} />                          )
+                            <Incident key={incident._id} incident= {incident} getUserNameById={getUserNameById} />                          )
                       })
                   }           
                   </tbody>

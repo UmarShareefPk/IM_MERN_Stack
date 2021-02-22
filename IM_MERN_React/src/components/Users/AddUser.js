@@ -66,7 +66,7 @@ import { addNewUser } from '../../store/actions/usersActions';
      formData.append("FirstName", firstName); 
      formData.append("LastName", lastName);
      formData.append("Email", email); 
-     formData.append("Phone", email); 
+     formData.append("Phone", phone ); 
      addNewUser(formData);
   }; 
 

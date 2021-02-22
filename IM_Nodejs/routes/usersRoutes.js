@@ -1,6 +1,7 @@
 const express = require('express');
 const usersController = require('../controllers/usersController');
-
+let multer = require('multer');
+let upload = multer();
 
 const router = express.Router();
 
@@ -10,12 +11,7 @@ const router = express.Router();
  router.get('/addUser', usersController.addUser);
  router.get('/addUserLogin', usersController.addUserLogin);
  router.post('/updateSocketId', usersController.updateSocketId);
- 
-
-
-// router.get('/', blogController.blog_index);
-// router.post('/', blogController.blog_create_post);
-// router.get('/:id', blogController.blog_details);
-// router.delete('/:id', blogController.blog_delete);
+ router.get('/usersWithPage', usersController.usersWithPage);
+ router.post('/addUser', upload.any() , usersController.addUser);
 
 module.exports = router;

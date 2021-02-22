@@ -45,6 +45,8 @@ export const incidentsWithPage = (parameters) => {
         })
           .then((response)=>{ 
              const data = true;
+             console.log(response);
+             incidentUpdatedSignalR(response.data.Id);
              dispatch({ type: 'NEW_INCIDENT_STATUS', data });
           })          
           .catch((err)=>{  

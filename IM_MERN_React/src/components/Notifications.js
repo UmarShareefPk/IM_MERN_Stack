@@ -40,11 +40,12 @@ import { removeIncidentData, getIncidentById } from "../store/actions/incidentsA
    }, [notifications]);
 
    const setStatus = (id, status) => {
+     console.log(id);
      setNotificationStatus(id, status);
    };
 
    const openIncident = (notification) => {
-     setStatus(notification.Id, true);
+     setStatus(notification._id, true);
 
      let path = "/Incident/" + notification.IncidentId;
      if (history.location.pathname !== path) {
@@ -85,7 +86,7 @@ import { removeIncidentData, getIncidentById } from "../store/actions/incidentsA
                  ? "notification-box read"
                  : "notification-box unread";
                return (
-                 <li key={notification.Id}>
+                 <li key={notification._id}>
                    <div className={classes}>
                      <div className="row">
                        <div className="col s2">
@@ -93,7 +94,7 @@ import { removeIncidentData, getIncidentById } from "../store/actions/incidentsA
                            <i
                              className="material-icons white-text readIcon"
                              title="Mark Unread"
-                             onClick={() => setStatus(notification.Id, false)}
+                             onClick={() => setStatus(notification._id, false)}
                            >
                              radio_button_unchecked
                            </i>
@@ -101,7 +102,7 @@ import { removeIncidentData, getIncidentById } from "../store/actions/incidentsA
                            <i
                              className="material-icons white-text readIcon"
                              title="Mark Read"
-                             onClick={() => setStatus(notification.Id, true)}
+                             onClick={() => setStatus(notification._id, true)}
                            >
                              radio_button_checked
                            </i>

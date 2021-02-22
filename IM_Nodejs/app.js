@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const usersRoutes = require('./routes/usersRoutes');
 const incidentsRoutes = require('./routes/incidentsRoutes');
+const notificationsRoutes = require('./routes/notificationsRoutes');
 const httpSocket = require('./socket'); 
 var cors = require('cors');
 const bodyParser = require('body-parser');
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 ///////////////// Routes ///////////////////////////
 app.use('/users', usersRoutes);
 app.use('/incidents', incidentsRoutes);
+app.use('/notifications', notificationsRoutes);
 
 ////////////////  For Test //////////////////////////
 app.get('/person', (req, res) => {  

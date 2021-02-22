@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from "moment";;
 
 export default function User({user}) {
     
@@ -7,7 +8,7 @@ export default function User({user}) {
         <td>{user.FirstName}</td>
         <td>{user.LastName}</td>
         <td>{user.Email}</td>
-        <td>{user.CreateDate}</td>  
+        <td><span title= {moment(user.createdAt).format("MMMM DD YYYY, h:mm:ss a")}>{moment(user.createdAt).fromNow() } </span></td>
       </tr>
     );
 }

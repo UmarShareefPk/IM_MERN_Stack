@@ -68,7 +68,9 @@ const addIncident = async (req, res) => {
   await addWatchList(id , req.body.CreatedBy);
   await addNotification(id , req.body.CreatedBy , req.body.AssignedTo, `[${ req.body.CreatedBy}] created an Incident and assigned it to you.`)
 
-  res.status(200).json("Incident added.");
+  res.status(200).json({
+    Id : id
+  });
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 const addComment = async (req, res) => {

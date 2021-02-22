@@ -5,11 +5,11 @@ export const usersUrls = {
     tokenUrl : baseUrl + "users/login",
     authenticateUrl :  baseUrl + "users/login",
     allUsersUrl : baseUrl + "users/allUsers",
-    userssWithPageUrl : baseUrl + "api/Users/GetUsersWithPage?",
-    addNewUserUrl : baseUrl + "api/Users/AddUser",
+    userssWithPageUrl : baseUrl + "users/usersWithPage?",
+    addNewUserUrl : baseUrl + "users/addUser",
     updateSocketIdUrl : baseUrl + "users/updateSocketId",
-    allNotificationsUrl :  baseUrl + "users/userNotifications",
-    setNotificationStatusUrl : baseUrl + "api/Users/UpdateIsRead"
+    allNotificationsUrl :  baseUrl + "notifications/getAllNotifications",
+    setNotificationStatusUrl : baseUrl + "notifications/setNotificationStatus"
 }
 
 export const incidentsUrls = {

@@ -2,7 +2,7 @@ const User = require('../models/user');
 const UserLogin = require('../models/userlogin');
 var jwt = require('jsonwebtoken');
 var config = require('../config');
-
+var fs = require('fs');
 
 const login = async (req, res) => {
  
@@ -55,7 +55,7 @@ const userById = (req, res) => {
   }
 
 
-const addUser = (req, res) => {
+const addUser1 = (req, res) => {
   const user = new User({
     CreateDate : new Date(),
     FirstName : "Ali",
@@ -97,32 +97,58 @@ const updateSocketId = async (req, res) => {
   //console.log(updateResult);
 }
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// const blog_details = (req, res) => {
-//   const id = req.params.id;
-//   Blog.findById(id)
-//     .then(result => {
-//       res.render('details', { blog: result, title: 'Blog Details' });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.render('404', { title: 'Blog not found' });
-//     });
-// }
+ const addUser = async (req, res) => {
+  
+  //console.log("req.body" , req.body);
+  let u = JSON.parse(JSON.stringify(req.body)); 
+  u.ProfilePic = req.files.length > 0? req.files[0].originalname : "";
 
+  console.log("u req.files", req.files);
 
+  const user = new User(u);
+  var newUser = await user.save().catch(err => console.log(err));
+  var id = newUser._id;  
 
+  if (!fs.existsSync('./Attachments/Users/' + id)) {
+    fs.mkdir('./Attachments/Users/' + id, err => {      
+      console.log("folder created."); 
+      });
+  }   
 
-// const blog_delete = (req, res) => {
-//   const id = req.params.id;
-//   Blog.findByIdAndDelete(id)
-//     .then(result => {
-//       res.json({ redirect: '/blogs' });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+  req.files.forEach(file => {
+    let path = './Attachments/Users/' + id + '/'+ file.originalname
+    console.log("path", path);
+    fs.writeFile(path , file.buffer, async ()=>{    
+      console.log("file created.");   
+    })  
+  });
+ 
+  res.status(200).json({
+    Id : id
+  });
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const usersWithPage = async (req, res) => {
+  console.log("req.query.PageSize", req.query.PageSize);
+  let PageSize =  req.query.PageSize;
+  let PageNumber =  req.query.PageNumber;
+  let SortBy =  req.query.SortBy;
+  let SortDirection =  req.query.SortDirection;
+
+  let total = await User.find().countDocuments();
+  let skip = PageSize * (PageNumber - 1); 
+
+  let users = await User.find().skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
+
+  res.json({
+    Users : users,
+    Total_Users : total
+  });
+}
 
 module.exports = {
   login,
@@ -130,9 +156,7 @@ module.exports = {
   allUsers,
   addUser,
   addUserLogin,
-  updateSocketId
-  // blog_details, 
-  // blog_create_get, 
-  // blog_create_post, 
-  // blog_delete
+  updateSocketId,
+  usersWithPage
+
 }

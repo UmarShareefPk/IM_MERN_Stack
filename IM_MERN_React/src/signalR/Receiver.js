@@ -45,6 +45,7 @@ import { updateHubId } from '../store/actions/userLoginActions'
 
         socket.on('UpdateNotifications', function(incidentId) {
           console.log(incidentId + " has been updated.");
+          refreshNotifications(userId);
         });
      
     }, [])

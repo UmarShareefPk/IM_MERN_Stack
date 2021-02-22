@@ -21,9 +21,9 @@ const initState = {
 
        case "STATUS_CHANGED":
          var noti = action.data;
-
+          console.log("noti" , noti);
          let notifications = state.notifications.map((notification) => {
-           if (notification.Id === noti.id) {
+           if (notification._id === noti.id) {
              notification.IsRead = noti.isRead;
            }
            return notification;
