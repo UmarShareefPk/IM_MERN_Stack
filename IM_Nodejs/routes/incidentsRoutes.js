@@ -13,5 +13,6 @@ const router = express.Router();
  router.get('/incidentsWithPage', incidentsController.incidentsWithPage);
  router.get('/downloadFile', incidentsController.downloadFile);
  router.get('/deleteFile', incidentsController.deleteFile)
+ router.get('/deleteComment', incidentsController.deleteComment)
 
 module.exports = router;

@@ -128,8 +128,8 @@ const initState = {
        case "COMMENT_DELETED":
          changedincident = { ...state.IncidentSelected };
          changedincident.Comments = changedincident.Comments.filter(
-           (comment) => comment.Id !== action.data
-         );
+           (comment) => comment._id !== action.data
+         );         
          return {
            ...state,
            IncidentSelected: changedincident,

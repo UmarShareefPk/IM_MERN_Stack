@@ -13,18 +13,22 @@ export const incidentsWithPage = (parameters) => {
                     "PageSize=" + parameters.PageSize +"&PageNumber=" + parameters.PageNumber 
                     + "&SortBy=q&SortDirection=q&Search=" + parameters.Search;     
         axios({
-          method: 'GET',
-          url: url,         
-          cancelToken: new axios.CancelToken(c => cancel = c)
+          method: "GET",
+          url: url,
+          cancelToken: new axios.CancelToken((c) => (cancel = c)),
         })
-          .then((response)=>{ 
-             const data = response.data;
-              dispatch({ type: 'INCIDENTS_WITH_PAGE', data });
+          .then((response) => {
+            const data = response.data;
+            dispatch({ type: "INCIDENTS_WITH_PAGE", data });
           })
-          .catch((err)=>{    
-                   console.log(err.message);
-                   const data = err.message;
-                   dispatch({ type: 'INCIDENTS_WITH_PAGE_ERROR', data });
+          .catch((err) => {
+            if (axios.isCancel(err)) {
+              console.log("Request canceled", err.message);
+              return;
+            }
+            console.log(err.message);
+            const data = err.message;
+            dispatch({ type: "INCIDENTS_WITH_PAGE_ERROR", data });
           });    
     }
   }

@@ -6,6 +6,7 @@ const WatchList = require('../models/watchList');
 const Notification = require('../models/notification');
 var fs = require('fs');
 var path = require('path');
+const { search } = require('../routes/incidentsRoutes');
 
 
 const incidentById = async (req, res) => {
@@ -79,6 +80,14 @@ const addComment = async (req, res) => {
   var newComment = await comment.save().catch(err=>res.status(400).json(err));
   var id = newComment._id;  
 
+  //// Notifications  
+  await addWatchList( newComment.IncidentId , newComment.UserId);
+  let watchers = await WatchList.find({IncidentId :  newComment.IncidentId});
+  watchers.forEach(async watcher => {
+    if(watcher.UserId !== newComment.UserId)
+      await addNotification(newComment.IncidentId , newComment.UserId , watcher.UserId, `[${ newComment.UserId}] added a new comment. ${newComment.CommentText.slice(0, 20)}...`)
+  })
+  
   let comment_response = JSON.parse(JSON.stringify(newComment)); // without it, cannot add new property in object. like attachments
 
   comment_response.attachments = [];
@@ -116,7 +125,15 @@ const addWatchList = async (incidentId , userId) => {
     IncidentId: incidentId,  
     UserId: userId   
   });
-  var watchlistAdded = await watchList.save().catch(err=> console.log(err));
+  let watch = await WatchList.find({IncidentId : incidentId , UserId :  userId});
+  if (watch.length === 0) {
+    var watchlistAdded = await watchList
+      .save()
+      .catch((err) => console.log(err));
+  }
+  else{
+    console.log("User Already exists in watch list");
+  }
 }
 
 const addNotification = async (incidentId , SourceUserId , userId, notifyAbout) => {
@@ -168,6 +185,13 @@ const updateIncident = async (req, res) => {
   let updateResult = await Incident.findOneAndUpdate({_id: incidentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
   });
 
+  await addWatchList( incidentId ,userId);
+  let watchers = await WatchList.find({IncidentId :  incidentId});
+  watchers.forEach(async watcher => {
+    if(watcher.UserId !== userId)
+      await addNotification(incidentId , userId , watcher.UserId, `[${ userId}] Updated ${field} on Incident: ${updateResult.Title.slice(0,20)}. `)
+  })
+
   res.status(200).json(updateResult);  
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +202,13 @@ const updateComment = async (req, res) => {
 
   let updateResult = await Comment.findOneAndUpdate({_id: commentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
   });
+
+  await addWatchList( updateResult.IncidentId , updateResult.UserId);
+  let watchers = await WatchList.find({IncidentId :  updateResult.IncidentId });
+  watchers.forEach(async watcher => {
+    if(watcher.UserId !== updateResult.UserId)
+      await addNotification(updateResult.IncidentId , updateResult.UserId , watcher.UserId, `[${ updateResult.UserId}] updated a comment from an Incident.`)
+  })
    
   res.status(200).json(updateResult);  
 }
@@ -195,13 +226,8 @@ const incidentsWithPage = async (req, res) => {
 
   let total = await Incident.find({ Title : regex}).countDocuments();
   let skip = PageSize * (PageNumber - 1); 
-  let incidents = [];
+  let incidents = await Incident.find({ Title : regex}).skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
   
-  
-
-  incidents = await Incident.find({ Title : regex}).skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
-  
-  console.log(incidents);
   res.json({
     Incidents : incidents,
     Total_Incidents : total
@@ -248,6 +274,29 @@ const deleteFile = async (req, res) => {
   res.json("Fiile Deleted");
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteComment = async (req, res) => {  
+  let commentId =  req.query.commentId;
+  let incidentId =  req.query.incidentId;
+  let userId =  req.query.userId;
+  
+ let response =  await Comment.deleteOne({_id : commentId});
+ response =  await CommentAttachment.deleteMany({CommentId : commentId});
+
+ await addWatchList( incidentId , userId);
+ let watchers = await WatchList.find({IncidentId :  incidentId });
+ watchers.forEach(async watcher => {
+   if(watcher.UserId !== userId)
+     await addNotification(incidentId , userId , watcher.UserId, `[${ userId}] deleted a comment from an Incident.`)
+ })
+ 
+ fs.rmdirSync('./Attachments/Incidents/' + incidentId +  '/Comments/' + commentId, { recursive: true });
+  
+  res.json("Comment Deleted");
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = {
@@ -258,5 +307,6 @@ module.exports = {
   updateIncident,
   downloadFile,
   updateComment,
-  deleteFile
+  deleteFile,
+  deleteComment
 }
