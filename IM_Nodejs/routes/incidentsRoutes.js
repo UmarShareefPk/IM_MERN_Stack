@@ -12,5 +12,6 @@ const router = express.Router();
  router.post('/addComment', upload.any() , incidentsController.addComment);
  router.get('/incidentsWithPage', incidentsController.incidentsWithPage);
  router.get('/downloadFile', incidentsController.downloadFile);
+ router.get('/deleteFile', incidentsController.deleteFile)
 
 module.exports = router;

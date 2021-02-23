@@ -176,8 +176,8 @@ const updateComment = async (req, res) => {
    let commentId = req.body._id; 
   let updateobj = {CommentText : req.body.CommentText };   
 
-   let updateResult = await Comment.findOneAndUpdate({_id: commentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
-   });
+  let updateResult = await Comment.findOneAndUpdate({_id: commentId}, { $set: updateobj}, {useFindAndModify: false}, ()=>{
+  });
    
   res.status(200).json(updateResult);  
 }
@@ -188,12 +188,20 @@ const incidentsWithPage = async (req, res) => {
   let PageNumber =  req.query.PageNumber;
   let SortBy =  req.query.SortBy;
   let SortDirection =  req.query.SortDirection;
+  let Search =  req.query.Search;
 
-  let total = await Incident.find().countDocuments();
+  let reg = `.*${Search}.*`
+  let regex = new RegExp(reg,'i')
+
+  let total = await Incident.find({ Title : regex}).countDocuments();
   let skip = PageSize * (PageNumber - 1); 
+  let incidents = [];
+  
+  
 
-  let incidents = await Incident.find().skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
-
+  incidents = await Incident.find({ Title : regex}).skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
+  
+  console.log(incidents);
   res.json({
     Incidents : incidents,
     Total_Incidents : total
@@ -220,6 +228,26 @@ const downloadFile = (req, res) => {
   res.download(filepath);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteFile = async (req, res) => {  
+  let type =  req.query.type;
+  let CommentId =  req.query.commentId;
+  let incidentId =  req.query.incidentId;
+  let FileName =  req.query.filename;
+  let fileId =  req.query.fileId;   
+ 
+  if(type !== "comment"){      
+     let response =  await IncidentAttachment.deleteOne({_id : fileId});    
+     await fs.unlink('./Attachments/Incidents/' + incidentId +  '/' + FileName, ()=>{   });
+  } 
+  else{   
+    let response =  await CommentAttachment.deleteOne({_id : fileId});   
+    await fs.unlink('./Attachments/Incidents/' + incidentId +  '/Comments/'+ CommentId + '/' + FileName, ()=>{  });
+  } 
+  res.json("Fiile Deleted");
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = {
@@ -229,5 +257,6 @@ module.exports = {
   addComment,
   updateIncident,
   downloadFile,
-  updateComment
+  updateComment,
+  deleteFile
 }

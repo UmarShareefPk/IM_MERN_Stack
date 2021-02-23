@@ -164,7 +164,7 @@ export const incidentsWithPage = (parameters) => {
                 + "&commentId=" + file.CommentId 
                 + "&incidentId=" + incidentId
                 + "&userId=" + userid
-                + "&fileId=" + file.Id
+                + "&fileId=" + file._id
                 + "&filename=" + file.FileName
                 + "&contentType=" + file.ContentType
         axios.get(url)

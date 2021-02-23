@@ -60,11 +60,11 @@ const initState = {
        case "COMMENT_ATTACHMENT_DELETED":
          changedincident = { ...state.IncidentSelected };
          let attachments = changedincident.Comments.find(
-           (c) => c.Id === action.data.CommentId
-         ).attachments.filter((file) => file.Id !== action.data.Id);
+           (c) => c._id === action.data.CommentId
+         ).attachments.filter((file) => file._id !== action.data._id);
 
          changedincident.Comments = changedincident.Comments.map((c) => {
-           if (c.Id === action.data.CommentId) c.attachments = attachments;
+           if (c._id === action.data.CommentId) c.attachments = attachments;
            return c;
          });
          return {
@@ -75,7 +75,7 @@ const initState = {
        case "INCIDENT_ATTACHMENT_DELETED":
          changedincident = { ...state.IncidentSelected };
          changedincident.Attachments = changedincident.Attachments.filter(
-           (file) => file.Id !== action.data.Id
+           (file) => file._id !== action.data._id
          );
 
          return {

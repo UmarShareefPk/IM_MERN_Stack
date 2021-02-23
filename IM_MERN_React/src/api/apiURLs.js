@@ -20,6 +20,6 @@ export const incidentsUrls = {
     updateIncidentUrl : baseUrl + "incidents/updateIncident",
     updateCommentUrl : baseUrl + "incidents/updateComment",    
     getIncidentByIdUrl : baseUrl + "incidents/incidentById?Id=",
-    deleteAttachmentUrl : baseUrl + "api/Incidents/DeleteFile?",
+    deleteAttachmentUrl : baseUrl + "incidents/deleteFile?",
     downloadFileUrl : baseUrl + "incidents/downloadFile?",
 }
