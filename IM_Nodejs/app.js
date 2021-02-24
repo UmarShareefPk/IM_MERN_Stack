@@ -11,9 +11,6 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 
 
-
-//io.set('origins', '*:*');
-
 app.use(cors());
 
 // connect to mongodb & listen for requests
@@ -28,7 +25,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next )=> {
 
-  if(req.path.toLowerCase() === "/users/login" ){
+  if(req.path.toLowerCase() === "/users/login" || req.path.toLowerCase().includes("incidents/downloadfile")  ){
     next();
     return;
   }   
