@@ -11,7 +11,7 @@ export const  commentRecieved = (comment) => {
   export const  getAllNotifications = (userId) => {
     return (dispatch, getState) => {      
       
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.allNotificationsUrl + "?userId=" + userId;
         axios.get(url)
           .then((response)=>{            
@@ -20,15 +20,14 @@ export const  commentRecieved = (comment) => {
           })
           .catch((err)=>{                 
                    console.log(err);
-          });
-    
+          });   
     }
   }
 
   export const  setNotificationStatus = (id, isRead) => {
     return (dispatch, getState) => {      
       console.log(id);
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.setNotificationStatusUrl + "?notificationId=" + id + "&isRead="+ isRead;
         axios.get(url)
           .then((response)=>{            

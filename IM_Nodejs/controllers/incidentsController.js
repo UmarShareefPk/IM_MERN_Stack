@@ -37,9 +37,7 @@ const incidentById = async (req, res) => {
 
  res.json(incident);
  }
-
  //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const addIncident = async (req, res) => {
   
   //console.log("req.body" , req.body);
@@ -117,9 +115,7 @@ const addComment = async (req, res) => {
     })  
   });  
 }
-
 ///////////////////////////////////  Notification ////////////////////
-
 const addWatchList = async (incidentId , userId) => {
   const watchList = new WatchList({
     IncidentId: incidentId,  
@@ -148,7 +144,6 @@ const addNotification = async (incidentId , SourceUserId , userId, notifyAbout) 
   var newNotification = await notification.save().catch(err=> console.log(err));
 
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 const updateIncident = async (req, res) => {
   let field = req.body.Parameter;
@@ -213,7 +208,6 @@ const updateComment = async (req, res) => {
   res.status(200).json(updateResult);  
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const incidentsWithPage = async (req, res) => {
   let PageSize =  req.query.PageSize;
   let PageNumber =  req.query.PageNumber;
@@ -221,21 +215,27 @@ const incidentsWithPage = async (req, res) => {
   let SortDirection =  req.query.SortDirection;
   let Search =  req.query.Search;
 
-  let reg = `.*${Search}.*`
-  let regex = new RegExp(reg,'i')
+  let reg = `.*${Search}.*`;
+  let regex = new RegExp(reg,'i');
 
-  let total = await Incident.find({ Title : regex}).countDocuments();
+  let total = await Incident.find({
+    $or: [{ Title: regex }, { Description: regex }],
+  }).countDocuments();
+
   let skip = PageSize * (PageNumber - 1); 
-  let incidents = await Incident.find({ Title : regex}).skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
+  let incidents = await Incident.find({
+    $or: [{ Title: regex }, { Description: regex }],
+  })
+    .skip(skip)
+    .limit(parseInt(PageSize))
+    .sort({ createdAt: -1 });
   
   res.json({
     Incidents : incidents,
     Total_Incidents : total
   });
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const downloadFile = (req, res) => {
   let type =  req.query.type;
   let CommentId =  req.query.commentId;
@@ -253,9 +253,7 @@ const downloadFile = (req, res) => {
   let dirpath = __dirname.replace("\controllers" , "");  
   res.download(filepath);
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const deleteFile = async (req, res) => {  
   let type =  req.query.type;
   let CommentId =  req.query.commentId;
@@ -273,9 +271,7 @@ const deleteFile = async (req, res) => {
   } 
   res.json("Fiile Deleted");
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const deleteComment = async (req, res) => {  
   let commentId =  req.query.commentId;
   let incidentId =  req.query.incidentId;
@@ -295,8 +291,6 @@ const deleteComment = async (req, res) => {
   
   res.json("Comment Deleted");
 }
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = {

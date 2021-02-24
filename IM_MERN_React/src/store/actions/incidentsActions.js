@@ -8,7 +8,7 @@ export var cancel;
 export const incidentsWithPage = (parameters) => {
     return (dispatch, getState) => {  
      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+        axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.incidentsWithPageUrl +
                     "PageSize=" + parameters.PageSize +"&PageNumber=" + parameters.PageNumber 
                     + "&SortBy=q&SortDirection=q&Search=" + parameters.Search;     
@@ -35,7 +35,7 @@ export const incidentsWithPage = (parameters) => {
 
   export const addNewIncident = (formData) => {
     return (dispatch, getState) => {      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.addNewIncidentUrl
     
         axios({
@@ -62,7 +62,7 @@ export const incidentsWithPage = (parameters) => {
 
   export const addNewComment = (formData) => {
     return (dispatch, getState) => {      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.addNewCommentUrl
         axios.post(url, formData)
           .then((response)=>{            
@@ -81,7 +81,7 @@ export const incidentsWithPage = (parameters) => {
 
   export const deleteComment = (commentId, incidentId, userId) => {
     return (dispatch, getState) => {      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.deleteCommentUrl
                     + "commentId=" + commentId
                     + "&incidentId=" + incidentId
@@ -102,7 +102,7 @@ export const incidentsWithPage = (parameters) => {
   export const updateIncident = (parameters) => {
     return (dispatch, getState) => {      
      // console.log(comment);
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};      
+     axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};     
         axios({
           method: 'post',          
           url :incidentsUrls.updateIncidentUrl,
@@ -123,9 +123,8 @@ export const incidentsWithPage = (parameters) => {
   }
 
   export const updateComment = (comment) => {
-    return (dispatch, getState) => {    
-       console.log(comment);
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+    return (dispatch, getState) => { 
+       axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.updateCommentUrl
         axios.post(url, comment)
           .then((response)=>{  
@@ -143,8 +142,7 @@ export const incidentsWithPage = (parameters) => {
 
   export const getIncidentById = (incidentId) => {
     return (dispatch, getState) => {  
-    //  console.log("getIncidentById" ); 
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+       axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.getIncidentByIdUrl + incidentId; 
         axios.get(url)
           .then((response)=>{            
@@ -160,9 +158,8 @@ export const incidentsWithPage = (parameters) => {
   }
 
   export const deleteAttachment = (type, userid, incidentId , file) => {
-    return (dispatch, getState) => {    
-     
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+    return (dispatch, getState) => {  
+        axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = incidentsUrls.deleteAttachmentUrl
                 + "type=" + type
                 + "&commentId=" + file.CommentId 

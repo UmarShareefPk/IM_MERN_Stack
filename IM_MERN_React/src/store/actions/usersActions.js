@@ -4,7 +4,7 @@ import { usersUrls } from "../../api/apiURLs";
 export const  allUsers = (parameters) => {
     return (dispatch, getState) => {  
      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.allUsersUrl
         axios.get(url)
           .then((response)=>{            
@@ -21,7 +21,7 @@ export const  allUsers = (parameters) => {
   export const userssWithPage = (parameters) => {
     return (dispatch, getState) => {  
      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.userssWithPageUrl +
                     "PageSize=" + parameters.PageSize +"&PageNumber=" + parameters.PageNumber 
                     + "&SortBy=q&SortDirection=q&Search=" + parameters.Search;
@@ -39,7 +39,7 @@ export const  allUsers = (parameters) => {
   export const addNewUser = (formData) => {
     return (dispatch, getState) => {  
      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.addNewUserUrl 
         axios.post(url, formData)
           .then((response)=>{            

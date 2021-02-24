@@ -7,6 +7,9 @@ const notificationsRoutes = require('./routes/notificationsRoutes');
 const httpSocket = require('./socket'); 
 var cors = require('cors');
 const bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
+var config = require('./config');
+
 
 
 //io.set('origins', '*:*');
@@ -21,13 +24,29 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 ////////////// Middleware //////////////////////////
 app.use(express.urlencoded({ extended: true }));
-//app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.use((req, res, next) => {  
-//     res.locals.path = req.path;
-//     next();
-//   });  
+app.use((req, res, next )=> {
+
+  if(req.path.toLowerCase() === "/users/login" ){
+    next();
+    return;
+  }   
+
+  var token = req.headers["x-access-token"];
+  console.log("token" , token)
+ 
+  if (!token)
+    return res.status(401).send({ auth: false, message: "No token provided." });
+ 
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err)
+      return res.status(401).send({ auth: false, message: "Error in authentication. Session expired or invalid. " });       
+       
+    next();       
+  });
+});
+
 ///////////////// Routes ///////////////////////////
 app.use('/users', usersRoutes);
 app.use('/incidents', incidentsRoutes);

@@ -47,7 +47,7 @@ import { usersUrls } from "../../api/apiURLs";
   export const updateHubId = (socketId, userId) => {
     return (dispatch, getState) => {  
      
-        axios.defaults.headers = {'Authorization': `Bearer ${getState().userLogin.token + ""}`};
+      axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.updateSocketIdUrl 
         axios.post(url, {
           SocketId : socketId,

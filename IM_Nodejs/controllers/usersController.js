@@ -26,8 +26,6 @@ res.status(200).send({
                     });
 }
 
-
-
 const userById = (req, res) => {
 
  var token = req.headers["x-access-token"];
@@ -129,20 +127,22 @@ const updateSocketId = async (req, res) => {
     Id : id
   });
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const usersWithPage = async (req, res) => {
-  console.log("req.query.PageSize", req.query.PageSize);
+ 
   let PageSize =  req.query.PageSize;
   let PageNumber =  req.query.PageNumber;
   let SortBy =  req.query.SortBy;
   let SortDirection =  req.query.SortDirection;
+  let Search =  req.query.Search;
 
-  let total = await User.find().countDocuments();
+  let reg = `.*${Search}.*`
+  let regex = new RegExp(reg,'i')
+
+  let total = await User.find( {$or : [{ FirstName : regex}, { LastName : regex}] }).countDocuments();
   let skip = PageSize * (PageNumber - 1); 
 
-  let users = await User.find().skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
+  let users = await User.find({$or : [{ FirstName : regex}, { LastName : regex}] }).skip(skip).limit(parseInt(PageSize)).sort({'createdAt' : -1});
 
   res.json({
     Users : users,
