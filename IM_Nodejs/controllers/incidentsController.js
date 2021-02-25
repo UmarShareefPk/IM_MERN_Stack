@@ -29,12 +29,12 @@ const incidentById = async (req, res) => {
  let cAttachments = await CommentAttachment.find({ CommentId: { "$in" : commentsIds} });
 
  incident.Comments = incident.Comments.map(c => {
-  let comment = JSON.parse(JSON.stringify(c));
-  let attachs =cAttachments.find(file => file.CommentId === comment._id); 
-  comment.attachments = attachs? [].concat(attachs) : [];
-  return comment;
+      let comment = JSON.parse(JSON.stringify(c));
+      let attachs = cAttachments.filter(file => file.CommentId === comment._id); 
+      comment.attachments = attachs? [].concat(attachs) : [];
+      return comment;
  })
-
+ 
  res.json(incident);
  }
  //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,8 +93,10 @@ const addComment = async (req, res) => {
   if(!req.files || req.files.length === 0)
        res.status(200).json(comment_response);
 
+  
+
   if (!fs.existsSync('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id)) {   
-    fs.mkdir('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id,  {recursive: true}, err => {             
+    fs.mkdirSync('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id,  {recursive: true}, err => {             
       });
   }   
   let fileCount = req.files.length;
@@ -128,7 +130,7 @@ const addWatchList = async (incidentId , userId) => {
       .catch((err) => console.log(err));
   }
   else{
-    console.log("User Already exists in watch list");
+   // console.log("User Already exists in watch list");
   }
 }
 

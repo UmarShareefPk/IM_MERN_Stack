@@ -103,7 +103,7 @@ const updateSocketId = async (req, res) => {
   let u = JSON.parse(JSON.stringify(req.body)); 
   u.ProfilePic = req.files.length > 0? req.files[0].originalname : "";
 
-  console.log("u req.files", req.files);
+ // console.log("u req.files", req.files);
 
   const user = new User(u);
   var newUser = await user.save().catch(err => console.log(err));
@@ -111,7 +111,7 @@ const updateSocketId = async (req, res) => {
 
   if (!fs.existsSync('./Attachments/Users/' + id)) {
     fs.mkdir('./Attachments/Users/' + id, err => {      
-      console.log("folder created."); 
+    //  console.log("folder created."); 
       });
   }   
 
@@ -119,7 +119,7 @@ const updateSocketId = async (req, res) => {
     let path = './Attachments/Users/' + id + '/'+ file.originalname
     console.log("path", path);
     fs.writeFile(path , file.buffer, async ()=>{    
-      console.log("file created.");   
+    //  console.log("file created.");   
     })  
   });
  

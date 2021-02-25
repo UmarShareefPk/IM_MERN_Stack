@@ -30,8 +30,7 @@ app.use((req, res, next )=> {
     return;
   }   
 
-  var token = req.headers["x-access-token"];
-  console.log("token" , token)
+  var token = req.headers["x-access-token"]; 
  
   if (!token)
     return res.status(401).send({ auth: false, message: "No token provided." });
