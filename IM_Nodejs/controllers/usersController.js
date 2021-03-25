@@ -110,7 +110,7 @@ const updateSocketId = async (req, res) => {
   var id = newUser._id;  
 
   if (!fs.existsSync('./Attachments/Users/' + id)) {
-    fs.mkdir('./Attachments/Users/' + id, err => {      
+    fs.mkdirSync('./Attachments/Users/' + id, err => {      
     //  console.log("folder created."); 
       });
   }   

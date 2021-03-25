@@ -45,14 +45,14 @@ const addIncident = async (req, res) => {
   var newIncident = await incident.save().catch(err => console.log(err));
   var id = newIncident._id;  
 
-  if (!fs.existsSync('./Attachments/Incidents/' + id)) {
-    fs.mkdir('./Attachments/Incidents/' + id, err => {       
+  if (!fs.existsSync(path.join( __dirname.replace("\controllers" , "") , './Attachments/Incidents/' + id))) {
+    fs.mkdirSync(path.join( __dirname.replace("\controllers" , "") ,'./Attachments/Incidents/' + id), err => {       
       });
   }   
 
   req.files.forEach(file => {
-    let path = './Attachments/Incidents/' + id + '/'+ file.originalname
-    fs.writeFile(path , file.buffer, async ()=>{
+    let path1 = path.join( __dirname.replace("\controllers" , "") ,'./Attachments/Incidents/' + id + '/'+ file.originalname);
+    fs.writeFile(path1 , file.buffer, async ()=>{
       const incidentAttachment = new IncidentAttachment({
                                         FileName : file.originalname,
                                         ContentType : file.mimetype,
@@ -91,18 +91,18 @@ const addComment = async (req, res) => {
   comment_response.attachments = [];
 
   if(!req.files || req.files.length === 0)
-       res.status(200).json(comment_response);
+       res.status(200).json(comment_response);  
 
-  
-
-  if (!fs.existsSync('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id)) {   
-    fs.mkdirSync('./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id,  {recursive: true}, err => {             
+  if (!fs.existsSync(path.join( __dirname.replace("\controllers" , "") , './Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id))) {   
+    fs.mkdirSync(path.join( __dirname.replace("\controllers" , "") ,'./Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id),  {recursive: true}, err => {             
       });
   }   
   let fileCount = req.files.length;
   req.files.forEach(file => {
-    let path = './Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id + '/'+ file.originalname
-    fs.writeFile(path , file.buffer, async ()=>{
+
+    let _path = path.join( __dirname.replace("\controllers" , "") ,
+     '/Attachments/Incidents/'  + newComment.IncidentId +'/Comments/' + "/" + id + '/'+ file.originalname);
+    fs.writeFile(_path , file.buffer, async ()=>{
       const commentAttachment = new CommentAttachment({
                                         FileName : file.originalname,
                                         ContentType : file.mimetype,

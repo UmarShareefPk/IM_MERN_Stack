@@ -49,10 +49,10 @@ import { usersUrls } from "../../api/apiURLs";
      
       axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = usersUrls.updateSocketIdUrl 
-        axios.post(url, {
-          SocketId : socketId,
-          UserId : userId
-        })
+      axios.post(url, {
+        SocketId : socketId,
+        UserId : userId
+      })
           .then((response)=>{          
             console.log(response);
              dispatch({ type: 'UPDATE_SOCKET', socketId });
