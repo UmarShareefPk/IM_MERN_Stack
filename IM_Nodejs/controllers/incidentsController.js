@@ -295,6 +295,68 @@ const deleteComment = async (req, res) => {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////// Dashboard  ////////////////////////////////////////////////////////
+
+const kpi = async (req, res) => {
+  let id =  req.query.Id;
+
+ let inc = await Incident.findById(id)     
+      .catch(err => res.json(err));
+
+  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+
+ res.json(incident);
+ }
+
+ const overallWidget = async (req, res) => {
+  let id =  req.query.Id;
+
+ let inc = await Incident.findById(id)     
+      .catch(err => res.json(err));
+
+  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+
+ res.json(incident);
+ }
+
+ const last5Incidents = async (req, res) => {
+  let id =  req.query.Id;
+
+ let inc = await Incident.findById(id)     
+      .catch(err => res.json(err));
+
+  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+
+ res.json(incident);
+ }
+
+
+ const oldest5UnresolvedIncidents = async (req, res) => {
+  let id =  req.query.Id;
+
+ let inc = await Incident.findById(id)     
+      .catch(err => res.json(err));
+
+  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+
+ res.json(incident);
+ }
+
+
+ const mostAssignedToUsersIncidents = async (req, res) => {
+  let id =  req.query.Id;
+
+ let inc = await Incident.findById(id)     
+      .catch(err => res.json(err));
+
+  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+
+ res.json(incident);
+ }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 module.exports = {
   incidentById,
   addIncident,
@@ -304,5 +366,11 @@ module.exports = {
   downloadFile,
   updateComment,
   deleteFile,
-  deleteComment
+  deleteComment,
+
+  kpi,
+  overallWidget,
+  last5Incidents,
+  oldest5UnresolvedIncidents,
+  mostAssignedToUsersIncidents
 }

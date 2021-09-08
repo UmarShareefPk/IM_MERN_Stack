@@ -15,4 +15,11 @@ const router = express.Router();
  router.get('/deleteFile', incidentsController.deleteFile)
  router.get('/deleteComment', incidentsController.deleteComment)
 
+ router.get('/KPI', incidentsController.kpi)
+ router.get('/OverallWidget', incidentsController.overallWidget)
+ router.get('/Last5Incidents', incidentsController.last5Incidents)
+ router.get('/Oldest5UnresolvedIncidents', incidentsController.oldest5UnresolvedIncidents)
+ router.get('/MostAssignedToUsersIncidents', incidentsController.mostAssignedToUsersIncidents)
+
+
 module.exports = router;

@@ -23,3 +23,11 @@ export const incidentsUrls = {
     deleteAttachmentUrl : baseUrl + "incidents/deleteFile?",
     downloadFileUrl : baseUrl + "incidents/downloadFile?",
 }
+
+export const dashboardUrls = {
+    kpiUrl : baseUrl + "api/Incidents/KPI?userId=",
+    overallWidgetUrl : baseUrl + "Incidents/OverallWidget",
+    last5IncidentsUrl : baseUrl + "Incidents/Last5Incidents",
+    oldest5UnresolvedIncidentsUrl : baseUrl + "Incidents/Oldest5UnresolvedIncidents?",
+    mostAssignedToUsersIncidentsUrl : baseUrl + "Incidents/MostAssignedToUsersIncidents",
+}
