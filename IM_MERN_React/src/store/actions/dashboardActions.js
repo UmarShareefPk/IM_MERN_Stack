@@ -3,13 +3,14 @@ import { dashboardUrls } from "../../api/apiURLs";
 
 export const  GetKPI = (userId) => {
     return (dispatch, getState) => {  
+      console.log("calling server")
       axios.defaults.headers = {'x-access-token': `${getState().userLogin.token + ""}`};
         const url = dashboardUrls.kpiUrl + userId;       
         axios.get(url)
           .then((response)=>{      
             console.log("reponse : ",  response);      
              const data = response.data;
-            // console.log(data);
+             console.log(data);
               dispatch({ type: 'KPI', data });
           })
           .catch((err)=>{                 

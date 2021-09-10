@@ -11,6 +11,8 @@ function KPIBar({getKPIData, userId, kpiData}) {
     getKPIData(userId); 
   }, [])
 
+  if(kpiData == null || kpiData === undefined)
+  return <h2>Loading</h2>
  
     return (     
       <div class="row kpibar">       

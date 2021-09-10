@@ -25,9 +25,9 @@ export const incidentsUrls = {
 }
 
 export const dashboardUrls = {
-    kpiUrl : baseUrl + "api/Incidents/KPI?userId=",
-    overallWidgetUrl : baseUrl + "Incidents/OverallWidget",
-    last5IncidentsUrl : baseUrl + "Incidents/Last5Incidents",
-    oldest5UnresolvedIncidentsUrl : baseUrl + "Incidents/Oldest5UnresolvedIncidents?",
-    mostAssignedToUsersIncidentsUrl : baseUrl + "Incidents/MostAssignedToUsersIncidents",
+    kpiUrl : baseUrl + "incidents/KPI?userId=",
+    overallWidgetUrl : baseUrl + "incidents/OverallWidget",
+    last5IncidentsUrl : baseUrl + "incidents/Last5Incidents",
+    oldest5UnresolvedIncidentsUrl : baseUrl + "incidents/Oldest5UnresolvedIncidents?",
+    mostAssignedToUsersIncidentsUrl : baseUrl + "incidents/MostAssignedToUsersIncidents",
 }

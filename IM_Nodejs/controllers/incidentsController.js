@@ -298,14 +298,44 @@ const deleteComment = async (req, res) => {
 ////////////////////////////// Dashboard  ////////////////////////////////////////////////////////
 
 const kpi = async (req, res) => {
-  let id =  req.query.Id;
+ 
+  let userId =  req.query.userId;
 
- let inc = await Incident.findById(id)     
-      .catch(err => res.json(err));
+ let newIncidents = await Incident.find({ Status: "N" })
+   .count()
+   .catch((err) => res.json(err));
+ let inProgressIncidents = await Incident.find({ Status: "I" })
+   .count()
+   .catch((err) => res.json(err));
+ let lateIncidents = await Incident.find(
+   {$and : [ 
+     { $or : [ {Status: "N" } , {Status:  "I" }]} , 
+              {DueDate : {"$lt" : new Date()}} ]})
+   .count()
+   .catch((err) => res.json(err));
 
-  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+ let closedIncidents = await Incident.find({ Status: "C" })
+   .count()
+   .catch((err) => res.json(err));
 
- res.json(incident);
+ let approvedIncidents = await Incident.find({ Status: "A" })
+   .count()
+   .catch((err) => res.json(err));
+
+ let AssignedToMe = await Incident.find({ AssignedTo: userId })
+   .count()
+   .catch((err) => res.json(err));
+
+  console.log("closedIncidents", closedIncidents);
+
+ res.json({
+  New : newIncidents,
+  InProgress : inProgressIncidents,
+  Closed : closedIncidents,
+  Approved : approvedIncidents,
+  Late : lateIncidents,
+  AssignedToMe : AssignedToMe
+ });
  }
 
  const overallWidget = async (req, res) => {
