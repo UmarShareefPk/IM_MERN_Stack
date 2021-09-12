@@ -18,13 +18,15 @@ import FiveOldestOpenIncidents from './OldestOpen';
         <div className="container">     
           <KPIBar />
           <div className="row">
-            {/* <OverallWidget />
-            <LastFive /> */}
+             <OverallWidget />
+           <LastFive />
           </div>
 
           <div className="row">
-           {/* <MostAssignedByUser />
-           <FiveOldestOpenIncidents /> */}
+          <MostAssignedByUser />
+          <FiveOldestOpenIncidents />
+           {/* 
+           */}
            {/* <DayByDayCount /> */}
           </div>
 

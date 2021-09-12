@@ -58,9 +58,9 @@ const Incident = ({incident, dispatch}) => {
       <div className="incident">
         <div className="time-status">
         <span className="timestamp"
-          title={moment(incident.CreatedAT).format("MMMM DD YYYY, h:mm:ss a")}
+          title={moment(incident.createdAt).format("MMMM DD YYYY, h:mm:ss a")}
         >
-          {moment(incident.CreatedAT).fromNow()}{" "}
+          {moment(incident.createdAt).fromNow()}{" "}
         </span>
          
           <span className="status">
@@ -69,7 +69,7 @@ const Incident = ({incident, dispatch}) => {
         </div>
 
         <div className="title">
-          <a onClick={()=> openIncident(incident.Id)} >
+          <a onClick={()=> openIncident(incident._id)} >
             {incident.Title}
           </a>
         </div>

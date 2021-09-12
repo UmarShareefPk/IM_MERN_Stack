@@ -4,6 +4,7 @@ const Comment = require('../models/comment');
 const CommentAttachment = require('../models/commentAttachment');
 const WatchList = require('../models/watchList');
 const Notification = require('../models/notification');
+const User = require('../models/user');
 var fs = require('fs');
 var path = require('path');
 const { search } = require('../routes/incidentsRoutes');
@@ -298,90 +299,106 @@ const deleteComment = async (req, res) => {
 ////////////////////////////// Dashboard  ////////////////////////////////////////////////////////
 
 const kpi = async (req, res) => {
- 
-  let userId =  req.query.userId;
+  let userId = req.query.userId;
 
- let newIncidents = await Incident.find({ Status: "N" })
-   .count()
-   .catch((err) => res.json(err));
- let inProgressIncidents = await Incident.find({ Status: "I" })
-   .count()
-   .catch((err) => res.json(err));
- let lateIncidents = await Incident.find(
-   {$and : [ 
-     { $or : [ {Status: "N" } , {Status:  "I" }]} , 
-              {DueDate : {"$lt" : new Date()}} ]})
-   .count()
-   .catch((err) => res.json(err));
+  let newIncidents = await Incident.find({ Status: "N" }).count();
 
- let closedIncidents = await Incident.find({ Status: "C" })
-   .count()
-   .catch((err) => res.json(err));
+  let inProgressIncidents = await Incident.find({ Status: "I" }).count();
 
- let approvedIncidents = await Incident.find({ Status: "A" })
-   .count()
-   .catch((err) => res.json(err));
+  let lateIncidents = await Incident.find({
+    $and: [
+      { $or: [{ Status: "N" }, { Status: "I" }] },
+      { DueDate: { $lt: new Date() } },
+    ],
+  }).count();
 
- let AssignedToMe = await Incident.find({ AssignedTo: userId })
-   .count()
-   .catch((err) => res.json(err));
+  let closedIncidents = await Incident.find({ Status: "C" }).count();
 
-  console.log("closedIncidents", closedIncidents);
+  let approvedIncidents = await Incident.find({ Status: "A" }).count();
 
- res.json({
-  New : newIncidents,
-  InProgress : inProgressIncidents,
-  Closed : closedIncidents,
-  Approved : approvedIncidents,
-  Late : lateIncidents,
-  AssignedToMe : AssignedToMe
- });
- }
+  let AssignedToMe = await Incident.find({ AssignedTo: userId }).count();
+
+  res.json({
+    New: newIncidents,
+    InProgress: inProgressIncidents,
+    Closed: closedIncidents,
+    Approved: approvedIncidents,
+    Late: lateIncidents,
+    AssignedToMe: AssignedToMe,
+  });
+};
 
  const overallWidget = async (req, res) => {
-  let id =  req.query.Id;
+   let newIncidents = await Incident.find({ Status: "N" }).count();
 
- let inc = await Incident.findById(id)     
-      .catch(err => res.json(err));
+   let inProgressIncidents = await Incident.find({ Status: "I" }).count();
 
-  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+   let lateIncidents = await Incident.find({
+     $and: [
+       { $or: [{ Status: "N" }, { Status: "I" }] },
+       { DueDate: { $lt: new Date() } },
+     ],
+   }).count();
 
- res.json(incident);
- }
+   let closedIncidents = await Incident.find({ Status: "C" })
+     .count()
+     .catch((err) => res.json(err));
+
+   let approvedIncidents = await Incident.find({ Status: "A" }).count();
+
+   res.json({
+     New: newIncidents,
+     InProgress: inProgressIncidents,
+     Closed: closedIncidents,
+     Approved: approvedIncidents,
+     Late: lateIncidents,
+   });
+ };
 
  const last5Incidents = async (req, res) => {
-  let id =  req.query.Id;
-
- let inc = await Incident.findById(id)     
-      .catch(err => res.json(err));
-
-  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
-
- res.json(incident);
- }
+   let incidents = await Incident.find().sort({ createdAt: -1 }).limit(5);
+   res.json(incidents);
+ };
 
 
  const oldest5UnresolvedIncidents = async (req, res) => {
-  let id =  req.query.Id;
-
- let inc = await Incident.findById(id)     
-      .catch(err => res.json(err));
-
-  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
-
- res.json(incident);
+  
+  let incidents = await Incident.find({
+    $or: [{ Status: "N" }, { Status: "I" }],
+  })
+    .sort({ createdAt: 1 })
+    .limit(5);
+  res.json(incidents);
+  
  }
 
 
  const mostAssignedToUsersIncidents = async (req, res) => {
-  let id =  req.query.Id;
 
- let inc = await Incident.findById(id)     
-      .catch(err => res.json(err));
+  let mostAssigned = await Incident.aggregate([
+    { $group: { _id: "$AssignedTo", count: { $sum: 1 } } },
+  ]).limit(5).sort({count:-1});
 
-  let incident = JSON.parse(JSON.stringify(inc)); // without it, cannot add new property in object. like attachments and comments
+  let userIds =[] 
+  mostAssigned.map(d => {
+    userIds.push(d._id);
+  })
+ 
+  let users = await User.find({ _id: { "$in" : userIds} });
 
- res.json(incident);
+  let result  = [];
+  mostAssigned.forEach(data => {
+    let user = users.filter(u=> u._id == data._id)[0];
+  
+    result.push({
+      UserId: data._id,     
+      Name: user.FirstName + " " + user.LastName,
+      Count: data.count,
+    });
+  });
+ 
+  res.json(result);
+
  }
 
 

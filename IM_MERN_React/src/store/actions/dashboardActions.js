@@ -8,9 +8,9 @@ export const  GetKPI = (userId) => {
         const url = dashboardUrls.kpiUrl + userId;       
         axios.get(url)
           .then((response)=>{      
-            console.log("reponse : ",  response);      
+                
              const data = response.data;
-             console.log(data);
+             
               dispatch({ type: 'KPI', data });
           })
           .catch((err)=>{                 
@@ -26,7 +26,7 @@ export const  GetKPI = (userId) => {
         const url = dashboardUrls.overallWidgetUrl ;      
         axios.get(url)
           .then((response)=>{      
-            console.log("reponse : ",  response);      
+             
              const data = response.data;
             // console.log(data);
               dispatch({ type: 'OVERALLWIDGET', data });
@@ -43,7 +43,7 @@ export const  GetKPI = (userId) => {
         const url = dashboardUrls.last5IncidentsUrl ;      
         axios.get(url)
           .then((response)=>{      
-            console.log("reponse : ",  response);      
+               
              const data = response.data;
             // console.log(data);
               dispatch({ type: 'LAST5INCIDENTS', data });
@@ -61,7 +61,7 @@ export const  GetKPI = (userId) => {
         const url = dashboardUrls.oldest5UnresolvedIncidentsUrl ;      
         axios.get(url)
           .then((response)=>{      
-            console.log("reponse : ",  response);      
+              
              const data = response.data;
             // console.log(data);
               dispatch({ type: 'OLDEST5UNRESOLVEDINCIDENTS', data });
@@ -78,7 +78,7 @@ export const  GetKPI = (userId) => {
         const url = dashboardUrls.mostAssignedToUsersIncidentsUrl ;      
         axios.get(url)
           .then((response)=>{      
-            console.log("reponse : ",  response);      
+              
              const data = response.data;
             // console.log(data);
               dispatch({ type: 'MOSTASSIGNEDTOUSERS', data });

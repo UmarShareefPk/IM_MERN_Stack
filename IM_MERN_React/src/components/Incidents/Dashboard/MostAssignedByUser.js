@@ -12,17 +12,37 @@ function MostAssignedByUser({MostAssignedIncidentsData, getMostAssignedToUsers})
 
    if(MostAssignedIncidentsData.length ===0 || MostAssignedIncidentsData == null )
    return (<h3>loading..</h3>);
-
+console.log("MostAssignedIncidentsData", MostAssignedIncidentsData[0].Name);
   let data = [];
 
   try{
-    data =  [
-      { name: MostAssignedIncidentsData[0].Name, y: parseInt(MostAssignedIncidentsData[0].Count), color:'#B71C1C' },
-      { name: MostAssignedIncidentsData[1].Name, y: parseInt(MostAssignedIncidentsData[1].Count), color:'#E53935' },
-      { name: MostAssignedIncidentsData[2].Name, y: parseInt(MostAssignedIncidentsData[2].Count), color:'#EF5350' },
-      { name: MostAssignedIncidentsData[3].Name, y: parseInt(MostAssignedIncidentsData[3].Count), color:'#E57373' },
-      { name: MostAssignedIncidentsData[4].Name, y: parseInt(MostAssignedIncidentsData[4].Count), color:'#FFCDD2' }                
-  ];
+    let colorIndex = 0;
+    MostAssignedIncidentsData.forEach(d => {
+      let color = "";
+      switch(colorIndex){
+        case 0:
+          color = "#B71C1C";
+          break;
+          case 1:
+          color = "#E53935";
+          break;
+          case 2:
+          color = "#EF5350";
+          break;
+          case 3:
+          color = "#E57373";
+          break;
+          case 4:
+          color = "#FFCDD2";
+          break;
+        default:
+          color = "green";
+      };
+      colorIndex++;
+      data.push(
+        { name: d.Name, y: parseInt(d.Count), color:color }
+      )
+    });  
 
   }
   catch(err){

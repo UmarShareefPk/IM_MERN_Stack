@@ -15,7 +15,7 @@ function LastFive({Last5IncidentsData, getLast5IncidentsData, dispatch}) {
 if(Last5IncidentsData == null || Last5IncidentsData.length===0 )
  return <h3>Loading...</h3>
 
-console.log("Last5", Last5IncidentsData);
+
     return (
       <div className="col s12 m12 l6">
         <div className="widget">
@@ -61,9 +61,9 @@ const Incident = ({incident, dispatch}) => {
       <div className="incident">
         <div className="time-status">
         <span className="timestamp"
-          title={moment(incident.CreatedAT).format("MMMM DD YYYY, h:mm:ss a")}
+          title={moment(incident.createdAt).format("MMMM DD YYYY, h:mm:ss a")}
         >
-          {moment(incident.CreatedAT).fromNow()}{" "}
+          {moment(incident.createdAt).fromNow()}{" "}
         </span>
          
           <span className="status">
@@ -72,7 +72,7 @@ const Incident = ({incident, dispatch}) => {
         </div>
 
         <div className="title">
-          <a onClick={()=> openIncident(incident.Id)} >
+          <a onClick={()=> openIncident(incident._id)} >
             {incident.Title}
           </a>
         </div>
