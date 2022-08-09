@@ -23,23 +23,23 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use((req, res, next )=> {
+app.use((req, res, next) => {
 
-  if(req.path.toLowerCase() === "/users/login" || req.path.toLowerCase().includes("incidents/downloadfile")  ){
+  if (req.path.toLowerCase() === "/users/login" || req.path.toLowerCase() === "/person" || req.path.toLowerCase().includes("incidents/downloadfile")) {
     next();
     return;
-  }   
+  }
 
-  var token = req.headers["x-access-token"]; 
- 
+  var token = req.headers["x-access-token"];
+
   if (!token)
     return res.status(401).send({ auth: false, message: "No token provided." });
- 
+
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err)
-      return res.status(401).send({ auth: false, message: "Error in authentication. Session expired or invalid. " });       
-       
-    next();       
+      return res.status(401).send({ auth: false, message: "Error in authentication. Session expired or invalid. " });
+
+    next();
   });
 });
 
